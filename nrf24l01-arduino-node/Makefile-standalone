@@ -1,0 +1,13 @@
+#BOARD_TAG   = nano
+#BOARD_SUB   = atmega328old
+BOARD_TAG = uno
+ARDUINO_DIR=${HOME}/install/arduino-1.8.9
+CXXFLAGS_STD = -Os -std=gnu++14 -ffunction-sections -fdata-sections -flto -Wl,--gc-sections -DAVAILABLE_PINS='{2, 2, 0, true}' -DNODE_ID=122 -DNODE_NAME="\"heating/nodes/bedroom\"" -DSHARED_KEY="\"longlonglongpass\""  -I $(realpath ../modules)
+USER_LIB_PATH=$(realpath ../../arduino-link)
+
+ARDUINO_LIBS = Acorn128 AuthenticatedCipher Cipher Crypto CryptoLW Entropy MemoryFree RF24 RF24Mesh RF24Network Streaming SPI Wire PubSubClient RadioEncrypted RadioEncrypted/Entropy CRC32 ArduinoJson MqttModule MqttModule/MessageHandlers MqttModule/ValueProviders
+include /usr/share/arduino/Arduino.mk
+
+#ARDUINO_LIBS+=Timer
+
+

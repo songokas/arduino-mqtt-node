@@ -1,0 +1,1 @@
+compiler.cpp.extra_flags=-I ../modules -DWLAN_SSID_1="ssid" -DWLAN_PASSWORD_1="pass" -DSHARED_KEY="longlonglongpass" -DMQTT_SERVER_ADDRESS="192.168.0.140" -DDEBUG=1 -D MAX_NODES_PER_TOPIC=5 -DMAX_SUBSCRIBERS=20
