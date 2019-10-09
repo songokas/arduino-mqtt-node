@@ -1,3 +1,6 @@
 */Makefile
 */platform.local.txt
 */build-*
+*/CustomValuesProviders
+!src/CustomerValueProviders
+lib/esp8266/platform.local.txt

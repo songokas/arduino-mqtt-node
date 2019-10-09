@@ -13,6 +13,7 @@ digital 5 pin on
 * nrf24l01-arduino-node - arduino connecting to mqtt through gateway
 * nrf24l01-mqtt-gateway - forwards messages between nrf24l01 and mqtt server
 * wifi-esp-nod - connects directly to mqtt server
+* src/CustomerProviders - example of custom providers (link it inside once of the previous folder to load it)
 
 ## Topics
 
@@ -25,6 +26,7 @@ by default nodes subscribe to the following topics
 ## Howto build
 
 * git clone --recurse-submodules -j8 git://github.com/songokas/arduino-mqtt-node
+* build esp8266 related tools `cd esp8266/tools && python get.py`
 
 ### nrf24l01-arduino-node
 
@@ -50,8 +52,6 @@ cp Makefile-esp Makefile
 # modify Makefile if necessary
 cp platform.local.example.txt platform.local.txt
 # modify platform.local.txt provide your own keys, change settings
-# link file, modify according to your path
-ln -s $(pwd)/platform.local.txt  $HOME/.arduino15/packages/esp8266/hardware/esp8266/2.5.2/platform.local.txt
 make && make upload && make monitor
 ```
 
@@ -68,8 +68,6 @@ cp Makefile-esp Makefile
 # modify Makefile if necessary
 cp platform.local.example.txt platform.local.txt
 # modify platform.local.txt provide your own keys, change settings
-# link file, modify according to your path
-ln -s $(pwd)/platform.local.txt  $HOME/.arduino15/packages/esp8266/hardware/esp8266/2.5.2/platform.local.txt
 make && make upload && make monitor
 ```
 

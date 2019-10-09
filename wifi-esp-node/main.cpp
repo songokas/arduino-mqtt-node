@@ -63,7 +63,6 @@ AnalogProvider analogProvider;
 DigitalProvider digitalProvider;
 
 
-
 PinStateHandler handler(pinCollection, valueProviderFactory);
 SubscribePubSubHandler subscribeHandler(client, subscribers, handler);
 PinStateJsonHandler jsonHandler(pinCollection, valueProviderFactory);
