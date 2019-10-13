@@ -43,3 +43,4 @@
 [submodule "libs/esp8266"]
 	path = libs/esp8266
 	url = https://github.com/esp8266/Arduino.git
+    ignore = dirty

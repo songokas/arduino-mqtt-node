@@ -20,13 +20,14 @@ digital 5 pin on
 by default nodes subscribe to the following topics
 
 {NODE_NAME}/set/json - expects json such as {"pin": 13, "set": 1}
+
 {NODE_NAME}/subscribe - expects a new topic to subscribe to
 
 
 ## Howto build
 
 * git clone --recurse-submodules -j8 git://github.com/songokas/arduino-mqtt-node
-* build esp8266 related tools `cd esp8266/tools && python get.py`
+* build esp8266 related tools `(cd libs/esp8266/tools && python get.py)` or specify in Makefile
 
 ### nrf24l01-arduino-node
 
