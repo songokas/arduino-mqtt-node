@@ -37,6 +37,7 @@
 
 using RadioEncrypted::Encryption;
 using RadioEncrypted::EncryptedMesh;
+using RadioEncrypted::IEncryptedMesh;
 using RadioEncrypted::Entropy::AvrEntropyAdapter;
 
 using MqttModule::MeshMqttClient;
@@ -82,7 +83,6 @@ int main()
   AvrEntropyAdapter entropyAdapter(entropy);
   Encryption encryption (cipher, SHARED_KEY, entropyAdapter);
   EncryptedMesh encMesh (mesh, network, encryption);
-
   mesh.setNodeID(NODE_ID);
   // Connect to the mesh
   Serial << F("Connecting to the mesh...") << endl;
@@ -91,7 +91,6 @@ int main()
   } else {
     Serial << F("Connected.") << endl;
   }
-
   radio.setPALevel(RF24_PA_LOW);
 
   wdt_reset();
