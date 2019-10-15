@@ -105,14 +105,15 @@ void setup() {
 
     mesh.setNodeID(0);
 
-    radio.setPALevel(RF24_PA_LOW);
-
     ESP.wdtFeed();
 
     Serial << F("Connecting to mesh") << endl;
     if (!mesh.begin(RADIO_CHANNEL, RF24_250KBPS, MESH_TIMEOUT)) {
         Serial << F("Failed to connect to mesh") << endl;
     }
+
+    radio.setPALevel(RF24_PA_HIGH);
+
     ESP.wdtFeed();
 
     client.setServer(MQTT_SERVER_ADDRESS, 1883);
