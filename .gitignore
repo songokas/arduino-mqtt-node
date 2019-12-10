@@ -3,3 +3,5 @@
 */build-*
 */CustomValuesProviders
 !src/CustomerValueProviders
+.vscode
+.idea

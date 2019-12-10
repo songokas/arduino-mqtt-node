@@ -185,7 +185,7 @@ void loop()
         lastSentMessageTime = millis();
     }
 
-	if(millis() - lastRefreshTime >= DISPLAY_TIME) {
+	if (millis() - lastRefreshTime >= DISPLAY_TIME) {
 		lastRefreshTime += DISPLAY_TIME;
 
         char liveMsg[16] {0};
@@ -197,6 +197,10 @@ void loop()
         Serial << (F("Ping")) << endl;
         reconnect();
 	}
+
+	/*if (millis() > 7200000UL) {
+        ESP.restart();
+	}*/
 
     ESP.wdtFeed();
 }
