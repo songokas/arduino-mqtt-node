@@ -35,7 +35,14 @@ using RadioEncrypted::Encryption;
 using RadioEncrypted::EncryptedMesh;
 using RadioEncrypted::Entropy::EspRandomAdapter;
 
-const uint16_t DISPLAY_TIME {10000};
+struct MessageQueueItem
+{
+    uint16_t node {0};
+    MqttMessage message;
+    bool initialized {false};
+    uint8_t failedToSend {0};
+};
+
 const uint8_t MAX_SEND_RETRIES {3};
 const uint8_t MAX_MESSAGE_QUEUE {10};
 const uint8_t MAX_MESSAGE_FAILURES {60};
@@ -44,6 +51,8 @@ unsigned long lastRefreshTime {0};
 unsigned long lastSentMessageTime {0};
 
 const char * TOPIC_KEEP_ALIVE = "mesh-gateway/esp";
+uint8_t publishFailed {0};
+uint8_t reconnectMqttFailed {0};
 
 // requires WLAN_SSID_1, WLAN_PASSWORD_1, MQTT_SERVER_ADDRESS, SHARED_KEY
 // int main does not work
@@ -65,20 +74,12 @@ EncryptedMesh encMesh (mesh, network, encryption);
 
 SubscriberList subscribers;
 
-struct MessageQueueItem
-{
-    uint16_t node {0};
-    MqttMessage message;
-    bool initialized {false};
-    uint8_t failedToSend {0};
-};
-
 MessageQueueItem messageQueue[MAX_MESSAGE_QUEUE];
 
 #include "helpers.h"
 
-void setup() {
-
+void setup()
+{
 
     Serial.begin(9600);
     ESP.wdtDisable();
@@ -118,7 +119,7 @@ void setup() {
 
     client.setServer(MQTT_SERVER_ADDRESS, 1883);
 
-    client.setCallback([&mesh, &subscribers, &encMesh](const char * topic, uint8_t * payload, uint16_t len) {
+    client.setCallback([&mesh, &subscribers, &encMesh, &messageQueue](const char * topic, uint8_t * payload, uint16_t len) {
     
         DPRINT(F("Mqtt message received for: ")); DPRINTLN(topic);
         auto subscriber = subscribers.getSubscriber(topic);
@@ -133,12 +134,12 @@ void setup() {
             }
             MqttMessage message(topic);
             memcpy(message.message, payload, MIN(len, COUNT_OF(message.message)));
-            if (!addToQueue(message, node)) {
+            if (!addToQueue(messageQueue, COUNT_OF(messageQueue), message, node)) {
                 DPRINT(F("Failed to add to queue"));
             }
         }
     });
-    reconnect();
+    reconnectToMqtt(client);
 }
 
 void loop()
@@ -178,29 +179,35 @@ void loop()
     }
 
     if (millis() - lastSentMessageTime >= 1500) {
-        uint8_t messagesSent = sendMessages();
+        uint8_t messagesSent = sendMessages(messageQueue, COUNT_OF(messageQueue));
         if (messagesSent > 0) {
             DPRINT(F("Messages sent ")); DPRINTLN(messagesSent);
         }
         lastSentMessageTime = millis();
     }
 
-	if (millis() - lastRefreshTime >= DISPLAY_TIME) {
-		lastRefreshTime += DISPLAY_TIME;
+	if (millis() - lastRefreshTime >= 30000) {
 
         char liveMsg[16] {0};
-        sprintf(liveMsg, "%d", millis());
+        sprintf(liveMsg, "%lud", millis());
 		if (!client.publish(TOPIC_KEEP_ALIVE, liveMsg)) {
             Serial << F("Failed to send keep alive") << endl;
-		}
+            publishFailed++;
+		} else {
+            publishFailed = 0;
+        }
 
         Serial << (F("Ping")) << endl;
-        reconnect();
+        if (reconnectToMqtt(client) != ConnectionStatus::Connected) {
+            reconnectMqttFailed++;
+        } else {
+            reconnectMqttFailed = 0;
+        }
+        lastRefreshTime = millis();
+
+        if (reconnectMqttFailed > 10 || publishFailed > 10 || radio.failureDetected) {
+            ESP.restart();
+        }
 	}
-
-	/*if (millis() > 7200000UL) {
-        ESP.restart();
-	}*/
-
     ESP.wdtFeed();
 }

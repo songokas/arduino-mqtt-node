@@ -1,17 +1,31 @@
-void reconnect() {
+
+enum class ConnectionStatus
+{
+    Connected,
+    FailedToConnect
+};
+
+ConnectionStatus reconnectToMqtt(PubSubClient & client) {
     // Loop until we're reconnected
     if (!client.connected()) {
         DPRINTLN(F("Attempting MQTT connection..."));
         // Attempt to connect
         if (client.connect("ESP8266Client")) {
             DPRINTLN(F("Mqtt connected"));
+            return ConnectionStatus::Connected;
+
         } else {
-            Serial << F("Mqtt failed, rc=") << client.state() << F(" try again in 5 seconds") << endl;
-            delay(400);
+            Serial << F("Mqtt connection failed, rc=") << client.state() << F(" try again in 5 seconds") << endl;
+            return ConnectionStatus::FailedToConnect;
         }
     }
+    return ConnectionStatus::Connected;
+}
+
+void printMeshAddress()
+{
     Serial.println(F("********Assigned Addresses********"));
-     for(int i=0; i<mesh.addrListTop; i++){
+     for(int i=0; i < mesh.addrListTop; i++){
        Serial.print(F("NodeID: "));
        Serial.print(mesh.addrList[i].nodeID);
        Serial.print(F(" RF24Network Address: 0"));
@@ -20,9 +34,10 @@ void reconnect() {
     Serial.println(F("**********************************"));
 }
 
-bool addToQueue(const MqttMessage & message, uint16_t node)
+bool addToQueue(MessageQueueItem * messageQueue, size_t len, const MqttMessage & message, uint16_t node)
 {
-   for (auto & item: messageQueue) {
+    for (size_t i = 0; i < len; i++) {
+        MessageQueueItem & item = messageQueue[i];
         if (!item.initialized) {
             item.message = message;
             item.node = node;
@@ -30,13 +45,14 @@ bool addToQueue(const MqttMessage & message, uint16_t node)
             return true;
         }
     }
-   return false;
+    return false;
 }
 
-uint8_t sendMessages()
+uint8_t sendMessages(MessageQueueItem * messageQueue, size_t len)
 {
     uint8_t count = 0;
-    for (auto & item: messageQueue) {
+    for (size_t i = 0; i < len; i++) {
+        MessageQueueItem & item = messageQueue[i];
         if (item.initialized == true && item.failedToSend > MAX_MESSAGE_FAILURES) {
             item = {};
         }
