@@ -1,17 +1,3 @@
-void reconnect() {
-    // Loop until we're reconnected
-    if (!client.connected()) {
-        DPRINTLN(F("Attempting MQTT connection..."));
-        // Attempt to connect
-        if (client.connect("ESP8266Client")) {
-            DPRINTLN(F("Mqtt connected"));
-        } else {
-            Serial << F("Mqtt failed, rc=") << client.state() << F(" try again in 5 seconds") << endl;
-            delay(400);
-        }
-    }
-}
-
 bool sendLiveData(PubSubClient & client)
 {
     char topic[MAX_LEN_TOPIC] {0};
@@ -31,11 +17,16 @@ bool sendStateData(PubSubClient & client, ValueProviderFactory & provider, const
     char message[MAX_LEN_MESSAGE] {0};
 
     snprintf_P(topic, COUNT_OF(topic), CHANNEL_INFO, provider.getMatchingTopicType(pin), pin.id);
-    provider.formatMessage(message, COUNT_OF(message), pin);
+    if (!provider.formatMessage(message, COUNT_OF(message), pin)) {
+        Serial << (F("Failed to format message")) << endl;
+        return false; 
+    }
 
     if (!client.publish(topic, message)) {
         Serial << (F("Failed to publish state")) << endl;
         return false;
+    } else {
+        Serial << F("Sent ") << topic << F(" ") << message << endl;
     }
     return true;
 }

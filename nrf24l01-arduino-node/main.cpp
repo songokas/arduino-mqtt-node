@@ -140,7 +140,7 @@ int main()
 	if (millis() - lastRefreshTime >= DISPLAY_TIME) {
 
         Serial << F("freeMemory ") << freeMemory() << endl;
-		lastRefreshTime += DISPLAY_TIME;
+		    lastRefreshTime += DISPLAY_TIME;
 
         sendLiveData(client);
 

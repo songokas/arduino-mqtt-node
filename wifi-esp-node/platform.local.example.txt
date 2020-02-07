@@ -1,1 +1,1 @@
-compiler.cpp.extra_flags=-I ../arduino-link -DNODE_NAME="heating/nodes/bedroom" -DAVAILABLE_PINS='{3,0,0,true}' -DWLAN_SSID_1="ssid" -DWLAN_PASSWORD_1="pass" -DMQTT_SERVER_ADDRESS="192.168.0.140" -DDEBUG=1
+compiler.cpp.extra_flags=-I ../arduino-link -DNODE_NAME="heating/nodes/bedroom" -DWLAN_SSID_1="ssid" -DWLAN_PASSWORD_1="pass" -DMQTT_SERVER_ADDRESS="192.168.0.140" -DDEBUG=1
