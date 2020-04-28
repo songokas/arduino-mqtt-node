@@ -42,13 +42,15 @@ using RadioEncrypted::Entropy::AvrEntropyAdapter;
 
 using MqttModule::MeshMqttClient;
 using MqttModule::SubscriberList;
+using MqttModule::StaticSubscriberList;
 using MqttModule::Pin;
-using MqttModule::PinType;
 using MqttModule::MqttMessage;
 using MqttModule::PinCollection;
+using MqttModule::StaticPinCollection;
 using MqttModule::MessageHandlers::SubscribeHandler;
 using MqttModule::MessageHandlers::PinStateJsonHandler;
 using MqttModule::MessageHandlers::PinStateHandler;
+using MqttModule::ValueProviders::IValueProvider;
 using MqttModule::ValueProviders::ValueProviderFactory;
 using MqttModule::ValueProviders::DigitalProvider;
 using MqttModule::ValueProviders::AnalogProvider;
@@ -69,7 +71,7 @@ int main()
   init();
   Serial.begin(BAUD_RATE);
 
-  Serial << F("freeMemory ") << freeMemory() << endl;
+  info("freeMemory %d", freeMemory());
 
   wdt_enable(WDTO_8S);
 
@@ -84,31 +86,30 @@ int main()
   Encryption encryption (cipher, SHARED_KEY, entropyAdapter);
   EncryptedMesh encMesh (mesh, network, encryption);
   mesh.setNodeID(NODE_ID);
+
+
   // Connect to the mesh
-  Serial << F("Connecting to the mesh...") << endl;
+  info("Connecting to the mesh...");
   if (!mesh.begin(RADIO_CHANNEL, RF24_250KBPS, MESH_TIMEOUT)) {
-    Serial << F("Failed to connect to mesh") << endl;
+      error("Failed to connect to mesh");
   } else {
-    Serial << F("Connected.") << endl;
+      info("Connected.");
   }
   radio.setPALevel(RF24_PA_HIGH);
 
   wdt_reset();
 
-  SubscriberList subscribers;
+  StaticSubscriberList<2, 2, 2> subscribers;
   MeshMqttClient client(encMesh, subscribers);
 
-  // AVAILABLE_PINS
   Pin pins [] {AVAILABLE_PINS};
-  PinCollection pinCollection(pins, COUNT_OF(pins));
-
-  ValueProviderFactory valueProviderFactory;
+  StaticPinCollection<COUNT_OF(pins)> pinCollection(pins);
 
   AnalogProvider analogProvider;
   DigitalProvider digitalProvider;
 
-  valueProviderFactory.addByType((uint16_t)PinType::Analog, &analogProvider);
-  valueProviderFactory.addByType((uint16_t)PinType::Digital, &digitalProvider);
+  IValueProvider * providers[] {&analogProvider, &digitalProvider};
+  ValueProviderFactory valueProviderFactory(providers, COUNT_OF(providers));
 
   PinStateHandler handler(pinCollection, valueProviderFactory);
   SubscribeHandler subscribeHandler(client, handler);
@@ -139,8 +140,8 @@ int main()
 
 	if (millis() - lastRefreshTime >= DISPLAY_TIME) {
 
-        Serial << F("freeMemory ") << freeMemory() << endl;
-		    lastRefreshTime += DISPLAY_TIME;
+        info("freeMemory %d", freeMemory());
+		lastRefreshTime += DISPLAY_TIME;
 
         sendLiveData(client);
 
@@ -148,7 +149,7 @@ int main()
 		    lastSubscribeTime = 0;
         }
 
-        Serial << F("Ping") << endl;
+        info("Ping");
 	}
 
     if (millis() > lastSubscribeTime)  {

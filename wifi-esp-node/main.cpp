@@ -51,10 +51,12 @@ using MqttModule::ValueProviders::DallasSensor;
 const uint16_t DISPLAY_TIME {60000};
 const uint8_t TEMPERATURE_PIN = 2;
 const char CHANNEL_SERVER[] PROGMEM {HTTP_SERVER_URL NODE_NAME "/%s/%d"};
-
+const uint8_t WIFI_RETRY = 10;
+const uint8_t MQTT_RETRY = 6;
 unsigned long lastRefreshTime {0};
 
-ESP8266WiFiMulti WiFiMulti;
+
+ESP8266WiFiMulti wifi;
 WiFiClient net;
 PubSubClient client(net);
 HTTPClient httpClient;
@@ -87,55 +89,39 @@ void setup() {
 
     // We start by connecting to a WiFi network
     WiFi.mode(WIFI_STA);
-    WiFiMulti.addAP(WLAN_SSID_1, WLAN_PASSWORD_1);
+    wifi.addAP(WLAN_SSID_1, WLAN_PASSWORD_1);
     #ifdef WLAN_SSID_2
-    WiFiMulti.addAP(WLAN_SSID_2, WLAN_PASSWORD_2);
+    wifi.addAP(WLAN_SSID_2, WLAN_PASSWORD_2);
     #endif
 
-    Serial << F("Wait for WiFi... ") << endl;
-
-    uint16_t wifiAttempts = 0;
-    while (WiFiMulti.run() != WL_CONNECTED) {
-        wifiAttempts++;
-        Serial.print(".");
-        delay(500 * wifiAttempts);
-        ESP.wdtFeed();
+    if (!connectToWifi(wifi, WIFI_RETRY)) {
+        error("Unable to connect to wifi. Sleeping..")
+        ESP.deepSleep(120e6);
     }
 
-    Serial << F("Wifi connected") << endl;
-    Serial << F("IP address: ") << WiFi.localIP() << endl;
     delay(500);
 
     ESP.wdtFeed();
+
 #ifdef MQTT_SERVER_ADDRESS
-    Serial << F("Wait for mqtt server on ") << MQTT_SERVER_ADDRESS << endl;
-
-    uint16_t mqttAttempts = 0;
     client.setServer(MQTT_SERVER_ADDRESS, 1883);
-    while (!client.connect(NODE_NAME) && mqttAttempts < 10) {
-        mqttAttempts++;
-        Serial.print(".");
-        delay(500 * mqttAttempts);
-        ESP.wdtFeed();
-    }
-    if (mqttAttempts >= 10) {
-        Serial << F("failed to connect.") << endl;
-    } else {
-        Serial << F("connected.") << endl;
+    if (!connectToMqtt(client, NODE_NAME, null)) {
+        error("failed to connect to mqtt server on %s", MQTT_SERVER_ADDRESS);
+        ESP.deepSleep(120e6)
     }
 
-#ifndef SLEEP_FOR
-    subscribeToChannels(client, subscribers, subscribeHandler, jsonHandler);
+    #ifndef SLEEP_FOR
+        subscribeToChannels(client, subscribers, subscribeHandler, jsonHandler);
 
-    client.setCallback([&subscribers](const char * topic, uint8_t * payload, uint16_t len) {
-        Serial << F("Mqtt message received for: ") << topic << endl;
-        MqttMessage message(topic);
-        memcpy(message.message, payload, MIN(len, COUNT_OF(message.message)));
-        if (!(subscribers.call(message) > 0)) {
-            Serial << "Not handled: " << message.topic << endl; 
-        }
-    });
-#endif
+        client.setCallback([&subscribers](const char * topic, uint8_t * payload, uint16_t len) {
+            debug("Mqtt message received for: %s", topic);
+            MqttMessage message(topic);
+            memcpy(message.message, payload, MIN(len, COUNT_OF(message.message)));
+            if (!(subscribers.call(message) > 0)) {
+                warning("Not handled: %s", message.topic);
+            }
+        });
+    #endif
 #endif
 }
 
@@ -151,11 +137,11 @@ void loop()
         sendPostRequest(httpClient, valueProviderFactory, pin, doc);
         #endif
         #if !defined(MQTT_SERVER_ADDRESS) && !defined(HTTP_SERVER_URL)
-            Serial << F("No handler defined for sending data pin: ") << pin.id << endl;
+            error("No handler defined for sending data pin: %d", pin.id);
         #endif
     }
     client.loop();
-    Serial << F("Sleeping: ") << SLEEP_FOR << endl;
+    info("Sleeping: %d", SLEEP_FOR);
     ESP.deepSleep(SLEEP_FOR);
 #else
     client.loop();
@@ -172,7 +158,7 @@ void loop()
             sendPostRequest(httpClient, valueProviderFactory, pin, doc);
             #endif
             #if !defined(MQTT_SERVER_ADDRESS) && !defined(HTTP_SERVER_URL)
-                Serial << F("No handler defined for sending data pin: ") << pin.id << endl;
+                error("No handler defined for sending data pin: ") << endl;
             #endif
 
             ESP.wdtFeed();
@@ -187,15 +173,14 @@ void loop()
         
         if (!client.connected()) {
             if (client.connect(NODE_NAME)) {
-                Serial << F("Mqtt reconnected") << endl;
+                info("Mqtt reconnected");
                 subscribeToChannels(client, subscribers, subscribeHandler, jsonHandler);
             } else {
-                Serial << F("Mqtt failed to reconnect") << endl; 
+                info("Mqtt failed to reconnect"); 
             }
         }
         #endif
-        Serial << (F("Ping")) << endl;
-
+        info("Ping");
         
 	}
     ESP.wdtFeed();

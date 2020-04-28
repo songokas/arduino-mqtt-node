@@ -5,7 +5,7 @@ void operator delete(void* obj, unsigned int n) {
 bool reconnect(RF24Mesh & mesh)
 {
     if (!mesh.checkConnection() ) {
-        Serial << F("Renewing Mesh Address") << endl;
+        info("Renewing Mesh Address");
         if(!mesh.renewAddress(MESH_TIMEOUT)){
             return mesh.begin(RADIO_CHANNEL, RF24_250KBPS, MESH_TIMEOUT);
         } else {
@@ -14,7 +14,7 @@ bool reconnect(RF24Mesh & mesh)
     } else {
         auto currentAddress = mesh.getAddress(mesh.getNodeID());
         if (!(currentAddress > 0)) {
-            Serial << F("Renew address: ") << currentAddress << endl;
+            info("Renew address: %s", currentAddress);
             return mesh.renewAddress(MESH_TIMEOUT);
         }
     }
@@ -26,7 +26,7 @@ bool sendLiveData(MeshMqttClient & client)
     char topic[MAX_LEN_TOPIC] {0};
     snprintf_P(topic, COUNT_OF(topic), CHANNEL_KEEP_ALIVE);
     if (!client.publish(topic, millis())) {
-        Serial << (F("Failed to publish keep alive")) << endl;
+        error("Failed to publish keep alive");
         return false;
     }	
     return true;
@@ -39,7 +39,7 @@ bool sendStateData(MeshMqttClient & client, ValueProviderFactory & provider, con
     provider.formatMessage(msg.message, COUNT_OF(msg.message), pin);
 
     if (!client.publish(msg)) {
-        Serial << (F("Failed to publish state")) << endl;
+        error("Failed to publish state");
         return false;
     }
     return true;
@@ -51,17 +51,17 @@ unsigned long subscribeToChannels(MeshMqttClient & client, SubscribeHandler & su
     char topic[MAX_LEN_TOPIC] {0};
     snprintf_P(topic, COUNT_OF(topic), CHANNEL_SUBSCRIBE);
     if (client.subscribe(topic, &subscribeHandler)) {
-        Serial << (F("Subscribed for channel: ")) << topic << endl;
+        info("Subscribed for channel: %s", topic);
         char topic[MAX_LEN_TOPIC] {0};
         snprintf_P(topic, COUNT_OF(topic), CHANNEL_SET_JSON);
         if (client.subscribe(topic, &jsonHandler)) {
-            Serial << (F("Subscribed for channel: ")) << topic << endl;
+            info("Subscribed for channel: %s", topic);
             nextSubscribeIn = (24ul * 3600 * 1000);
         } else {
-            Serial << (F("Failed to subscribe: ")) << topic << endl;
+            error("Failed to subscribe: %s", topic);
         }
     } else {
-        Serial << (F("Failed to subscribe: ")) << topic << endl;
+        error("Failed to subscribe: %s");
     }
     return nextSubscribeIn;
 }
