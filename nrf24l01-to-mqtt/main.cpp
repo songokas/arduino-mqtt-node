@@ -9,7 +9,6 @@
 #include <Acorn128.h>
 #include <SPI.h>
 #include <PubSubClient.h>
-#include <ESP8266TrueRandom.h>
 
 // satisfy arduino-builder
 #include "ArduinoBuilderRadioEncrypted.h"
@@ -29,6 +28,7 @@
 #include "RadioEncrypted/Helpers.h"
 
 using MqttModule::MqttMessage;
+using MqttModule::MessageQueueItem;
 using RadioEncrypted::Encryption;
 using RadioEncrypted::EncryptedNetwork;
 using RadioEncrypted::Entropy::AnalogSignalEntropy;
@@ -38,27 +38,7 @@ using RadioEncrypted::sendLiveData;
 using RadioEncrypted::connectToWifi;
 using RadioEncrypted::resetWatchDog;
 
-
-bool sendMqttMessage(PubSubClient & client, const MqttMessage & data)
-{
-    if (client.publish(data.topic, data.message)) {
-        error("Failed to publish message. Topic: %s Message: %s", data.topic, data.message);
-        return false;
-    } 
-    debug("Sent %s %s", data.topic, data.message);
-    return true;
-}
-
-bool forwardToMqtt(EncryptedNetwork & network, PubSubClient & mqttClient)
-{
-    MqttMessage message;
-    RF24NetworkHeader header;
-    if (!network.receive(&message, sizeof(message), 0, header)) {
-        error("Failed to read message");
-        return false;
-    }
-    return sendMqttMessage(mqttClient, message);
-}
+#include "helpers.h"
 
 #ifndef USE_ENTROPY_PIN
 #define USE_ENTROPY_PIN 3
@@ -80,9 +60,11 @@ const uint16_t NODE_ID {NRF_NODE_ID}; // nrf24 network id
 const char SHARED_KEY[ENCRYPTION_KEY_LENGTH + 1] {ENCRYPTION_KEY}; // nrf24 network encryption key 16 chars
 const uint8_t ENTROPY_PIN {USE_ENTROPY_PIN}; // pin used for analog entropy retrieval
 const uint8_t WIFI_RETRY = 6;
+const uint8_t MAX_QUEUE_FOR_FAILURES = 60;
 
 bool connectedToNrfNetwork {false};
 unsigned long monitorTime {0};
+unsigned long lastSentMessageTime {0};
 
 ESP8266WiFiMulti wifi;
 WiFiClient net;
@@ -95,6 +77,7 @@ Acorn128 cipher;
 AnalogSignalEntropy entropy(ENTROPY_PIN, NODE_ID);
 Encryption encryption (cipher, SHARED_KEY, entropy);
 EncryptedNetwork encNetwork(NODE_ID, network, encryption);
+MessageQueueItem messageQueue[MAX_QUEUE_FOR_FAILURES];
 
 bool connectCallback()
 {
@@ -116,7 +99,7 @@ bool connectCallback()
     resetWatchDog();
     delay(500);
 
-    if (!connectToMqtt(client, NODE_NAME, nullptr)) {
+    if (!connectToMqtt(client, NODE_NAME, CHANNEL_MQTT_TO_NRF_NETWORK)) {
         error("Failed to connect to mqtt server on %s", MQTT_SERVER);
         return false;
     }
@@ -136,7 +119,25 @@ void setup()
     #ifdef WLAN_SSID_2
     wifi.addAP(WLAN_SSID_2, WLAN_PASSWORD_2);
     #endif
+
     client.setServer(MQTT_SERVER, 1883);
+
+    #ifdef MQTT_TO_NRF_NETWORK
+        client.setCallback([&mesh, &subscribers, &encMesh, &messageQueue](const char * topic, uint8_t * payload, uint16_t len) {
+        
+            MqttMessage message(topic);
+            memcpy(message.message, payload, MIN(len, COUNT_OF(message.message)));
+            if (!encNetwork.send(&message, sizeof(message), 0, node)) {
+                error("Failed to send to node %d", node);
+                if (!addToQueue(messageQueue, COUNT_OF(messageQueue), message, node)) {
+                    error("Failed to add to queue");
+                }
+            } else {
+                debug("Mqtt message received for: %s", topic);
+            }
+
+        });
+    #endif
     connectCallback();
 }
 
@@ -155,6 +156,13 @@ void loop()
             sendLiveData(client);
         }
         monitorTime = millis();
+    }
+    if (millis() - lastSentMessageTime >= 1500) {
+        uint8_t messagesSent = sendMessages(encNetwork, messageQueue, COUNT_OF(messageQueue));
+        if (messagesSent > 0) {
+            info("Messages sent %d", messagesSent);
+        }
+        lastSentMessageTime = millis();
     }
     delay(5);
     resetWatchDog();

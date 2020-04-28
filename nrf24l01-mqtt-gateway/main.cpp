@@ -29,6 +29,7 @@
 #include "RadioEncrypted/Entropy/EspRandomAdapter.h"
 
 using MqttModule::MqttMessage;
+using MqttModule::MessageQueueItem;
 using MqttModule::MessageType;
 using MqttModule::SubscriberList;
 using MqttModule::StaticSubscriberList;
@@ -39,14 +40,7 @@ using RadioEncrypted::connectToMesh;
 using RadioEncrypted::connectToMqtt;
 using RadioEncrypted::sendLiveData;
 using RadioEncrypted::connectToWifi;
-
-struct MessageQueueItem
-{
-    uint16_t node {0};
-    MqttMessage message;
-    bool initialized {false};
-    uint8_t failedToSend {0};
-};
+using RadioEncrypted::resetWatchDog;
 
 const uint8_t MAX_SEND_RETRIES {3};
 const uint8_t MAX_MESSAGE_QUEUE {10};
@@ -74,7 +68,7 @@ RF24Mesh mesh(radio,network);
 Acorn128 cipher;
 ESP8266TrueRandomClass entropy;
 EspRandomAdapter entropyAdapter(entropy);
-Encryption encryption (cipher, SHARED_KEY, entropyAdapter);
+Encryption encryption (cipher, ENCRYPTION_KEY, entropyAdapter);
 EncryptedMesh encMesh (mesh, network, encryption);
 
 StaticSubscriberList<MAX_SUBSCRIBERS, 2, MAX_NODES_PER_TOPIC> subscribers;
@@ -105,7 +99,7 @@ void setup()
 
     mesh.setNodeID(0);
 
-    RESET_WATCHDOG();
+    resetWatchDog();
 
     if (!connectToMesh(mesh)) {
         error("Unable to connect to mesh. Sleeping..");
@@ -114,11 +108,11 @@ void setup()
 
     radio.setPALevel(RF24_PA_HIGH);
 
-    RESET_WATCHDOG();
+    resetWatchDog();
 
     client.setServer(MQTT_SERVER_ADDRESS, 1883);
 
-    reconnectMqttFailed = connectToMqtt(client, NODE_NAME, nullptr) ? 0 : 1;
+    reconnectMqttFailed = connectToMqtt(client, MQTT_CLIENT_NAME, nullptr) ? 0 : 1;
 
     client.setCallback([&mesh, &subscribers, &encMesh, &messageQueue](const char * topic, uint8_t * payload, uint16_t len) {
     
@@ -173,7 +167,7 @@ void loop()
         } else {
             error("Failed to receive packets");
         }
-        RESET_WATCHDOG();
+        resetWatchDog();
     }
 
     if (millis() - lastSentMessageTime >= 1500) {
@@ -190,7 +184,7 @@ void loop()
 
         debug("Ping");
 
-        reconnectMqttFailed = connectToMqtt(client, NODE_NAME, nullptr);
+        reconnectMqttFailed = connectToMqtt(client, MQTT_CLIENT_NAME, nullptr);
 
         lastRefreshTime = millis();
 
@@ -198,5 +192,5 @@ void loop()
             ESP.restart();
         }
 	}
-    RESET_WATCHDOG();
+    resetWatchDog();
 }

@@ -1,3 +1,0 @@
-#
-
-compiler.cpp.extra_flags=-I ../arduino-link -DWIFI_SSID_1="ssid" -DWIFI_PASSWORD_1="pass" -DENCRYPTION_KEY="longlonglongpass" -DMQTT_SERVER_ADDRESS="192.168.0.130" -DMQTT_CLIENT_NAME="test1" -DNRF_RADIO_CHANNEL=89 -DNRF_NODE_ID=10
