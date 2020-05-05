@@ -20,8 +20,9 @@
 
 #include "CommonModule/MacroHelper.h"
 #include "RadioEncrypted/RadioEncryptedConfig.h"
+#include "RadioEncrypted/Helpers.h"
 #include "RadioEncrypted/Encryption.h"
-#include "RadioEncrypted/EncryptedMesh.h"
+#include "RadioEncrypted/EncryptedNetwork.h"
 #include "RadioEncrypted/Entropy/AvrEntropyAdapter.h"
 
 #include "MqttModule/MeshMqttClient.h"
@@ -36,7 +37,7 @@
 #include "MqttModule/ValueProviders/ValueProviderFactory.h"
 
 using RadioEncrypted::Encryption;
-using RadioEncrypted::EncryptedMesh;
+using RadioEncrypted::EncryptedNetwork;
 using RadioEncrypted::IEncryptedMesh;
 using RadioEncrypted::Entropy::AvrEntropyAdapter;
 
@@ -54,6 +55,8 @@ using MqttModule::ValueProviders::IValueProvider;
 using MqttModule::ValueProviders::ValueProviderFactory;
 using MqttModule::ValueProviders::DigitalProvider;
 using MqttModule::ValueProviders::AnalogProvider;
+using RadioEncrypted::connectToNetwork;
+using RadioEncrypted::resetWatchDog;
 
 #ifdef CUSTOM_PROVIDERS
 #include "CustomValueProviders/ValueProvidersInclude.h"
@@ -61,10 +64,15 @@ using MqttModule::ValueProviders::AnalogProvider;
 
 #include "helpers.h"
 
-const uint16_t DISPLAY_TIME { 30000 };
+const uint16_t DISPLAY_TIME {30000};
 const uint16_t BAUD_RATE {9600};
-const uint8_t CE_PIN = 7;
-const uint8_t CN_PIN = 8;
+const uint8_t CE_PIN {7};
+const uint8_t CN_PIN {8};
+const char * SHARED_KEY {ENCRYPTION_KEY};
+const uint16_t NODE_ID {NRF_NODE_ID};
+const uint8_t MAX_SUBSCRIBERS {2};
+const uint8_t MAX_NODES_PER_SUBSCRIBER {2};
+const uint8_t MAX_HANDLERS_PER_SUBSCRIBER {2};
 
 int main()
 {
@@ -84,22 +92,9 @@ int main()
   entropy.initialize();
   AvrEntropyAdapter entropyAdapter(entropy);
   Encryption encryption (cipher, SHARED_KEY, entropyAdapter);
-  EncryptedMesh encMesh (mesh, network, encryption);
-  mesh.setNodeID(NODE_ID);
+  EncryptedNetwork encMesh (NODE_ID, network, encryption);
 
-
-  // Connect to the mesh
-  info("Connecting to the mesh...");
-  if (!mesh.begin(RADIO_CHANNEL, RF24_250KBPS, MESH_TIMEOUT)) {
-      error("Failed to connect to mesh");
-  } else {
-      info("Connected.");
-  }
-  radio.setPALevel(RF24_PA_HIGH);
-
-  wdt_reset();
-
-  StaticSubscriberList<2, 2, 2> subscribers;
+  StaticSubscriberList<MAX_SUBSCRIBERS, MAX_NODES_PER_SUBSCRIBER, MAX_HANDLERS_PER_SUBSCRIBER> subscribers;
   MeshMqttClient client(encMesh, subscribers);
 
   Pin pins [] {AVAILABLE_PINS};
@@ -119,8 +114,16 @@ int main()
 #include "CustomValueProviders/ValueProvidersFactory.h"
 #endif
 
+  bool connectedToNrfNetwork = false;
   unsigned long lastRefreshTime = 0;
   unsigned long lastSubscribeTime = 0;
+
+  if (!connectToNetwork(network, radio, NODE_ID, RADIO_CHANNEL)) {
+      error("Unable to connect to nrf24 network");
+  } else {
+    connectedToNrfNetwork = true;
+  }
+  resetWatchDog();
 
   while (true) {
 
@@ -131,32 +134,34 @@ int main()
         if (!(pin.id > 0)) {
             continue;
         }
-        if (millis() - pin.lastRead > pin.readInterval) {
-            pin.lastRead = millis();
+        if (pin.changed) {
+            pin.changed = false;
             sendStateData(client, valueProviderFactory, pin);
-            wdt_reset();
+            resetWatchDog();
         } 
     }
 
 	if (millis() - lastRefreshTime >= DISPLAY_TIME) {
 
         info("freeMemory %d", freeMemory());
-		lastRefreshTime += DISPLAY_TIME;
+
+        if ((!connectedToNrfNetwork || radio.failureDetected) && !connectToNetwork(network, radio, NODE_ID, RADIO_CHANNEL)) {
+            error("Unable to connect to nrf24 network");
+        } else {
+            connectedToNrfNetwork = true;
+        }
 
         sendLiveData(client);
 
-        if (reconnect(mesh)) {
-		    lastSubscribeTime = 0;
-        }
-
         info("Ping");
+		lastRefreshTime = millis();
 	}
 
     if (millis() > lastSubscribeTime)  {
         lastSubscribeTime = millis() + subscribeToChannels(client, subscribeHandler, jsonHandler);
     }
 
-    wdt_reset();
+    resetWatchDog();
 
   }
 }

@@ -16,6 +16,8 @@
 // end
 //
 #include "CommonModule/MacroHelper.h"
+#include "MqttModule/MqttConfig.h"
+#include "RadioEncrypted/Helpers.h"
 #include "MqttModule/SubscriberList.h"
 #include "MqttModule/MqttMessage.h"
 #include "MqttModule/PinCollection.h"
@@ -44,13 +46,16 @@ using MqttModule::ValueProviders::DigitalProvider;
 using MqttModule::ValueProviders::AnalogProvider;
 using MqttModule::ValueProviders::DallasTemperatureProvider;
 using MqttModule::ValueProviders::DallasSensor;
+using RadioEncrypted::connectToWifi;
+using RadioEncrypted::resetWatchDog;
+using RadioEncrypted::connectToMqtt;
 
 // requires WLAN_SSID_1, WLAN_PASSWORD_1, MQTT_SERVER_ADDRESS, SLEEP_FOR, SERVER_URL
 // int main does not work
 
 const uint16_t DISPLAY_TIME {60000};
 const uint8_t TEMPERATURE_PIN = 2;
-const char CHANNEL_SERVER[] PROGMEM {HTTP_SERVER_URL NODE_NAME "/%s/%d"};
+const char CHANNEL_SERVER[] PROGMEM {HTTP_SERVER_URL MQTT_CLIENT_NAME "/%s/%d"};
 const uint8_t WIFI_RETRY = 10;
 const uint8_t MQTT_RETRY = 6;
 unsigned long lastRefreshTime {0};
@@ -105,9 +110,9 @@ void setup() {
 
 #ifdef MQTT_SERVER_ADDRESS
     client.setServer(MQTT_SERVER_ADDRESS, 1883);
-    if (!connectToMqtt(client, NODE_NAME, null)) {
+    if (!connectToMqtt(client, MQTT_CLIENT_NAME, nullptr)) {
         error("failed to connect to mqtt server on %s", MQTT_SERVER_ADDRESS);
-        ESP.deepSleep(120e6)
+        ESP.deepSleep(120e6);
     }
 
     #ifndef SLEEP_FOR
@@ -172,7 +177,7 @@ void loop()
 		sendLiveData(client);
         
         if (!client.connected()) {
-            if (client.connect(NODE_NAME)) {
+            if (client.connect(MQTT_CLIENT_NAME)) {
                 info("Mqtt reconnected");
                 subscribeToChannels(client, subscribers, subscribeHandler, jsonHandler);
             } else {

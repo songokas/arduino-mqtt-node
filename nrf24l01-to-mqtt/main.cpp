@@ -123,9 +123,13 @@ void setup()
     client.setServer(MQTT_SERVER, 1883);
 
     #ifdef MQTT_TO_NRF_NETWORK
+        // topic received 
+        // nrfNetwork/{nodeId}/{topic} message
+        // will be forwarded to nodeId as {topic} message
+        // e.g. nrfNetwork/132/heating/nodes/bedroom 1 => heating/nodes/bedroom 1
+        // e.g. nrfNetwork/431/sensor1 on => sensor1 on
         client.setCallback([&mesh, &subscribers, &encMesh, &messageQueue](const char * topic, uint8_t * payload, uint16_t len) {
-        
-            MqttMessage message(topic);
+            MqttMessage message(topic + findNextPos(topic, strlen(topic), '/', 2));
             memcpy(message.message, payload, MIN(len, COUNT_OF(message.message)));
             if (!encNetwork.send(&message, sizeof(message), 0, node)) {
                 error("Failed to send to node %d", node);

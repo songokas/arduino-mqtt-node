@@ -34,8 +34,8 @@ bool sendPostRequest(HTTPClient & client, ValueProviderFactory & provider, const
 
 bool sendMqttRequest(PubSubClient & client, ValueProviderFactory & provider, const Pin & pin)
 {
-    char topic[MAX_LEN_TOPIC] {0};
-    char message[MAX_LEN_MESSAGE] {0};
+    char topic[MQTT_MAX_LEN_TOPIC] {0};
+    char message[MQTT_MAX_LEN_MESSAGE] {0};
 
     snprintf_P(topic, COUNT_OF(topic), CHANNEL_INFO, provider.getMatchingTopicType(pin), pin.id);
     
@@ -60,7 +60,7 @@ void subscribeToChannels(
     PinStateJsonHandler & jsonHandler
 )
 {
-    char topic[MAX_LEN_TOPIC] {0};
+    char topic[MQTT_MAX_LEN_TOPIC] {0};
 
     snprintf_P(topic, COUNT_OF(topic), CHANNEL_SUBSCRIBE);
     if (subscribers.add(topic, &subscribeHandler, (uint16_t)0)) {
