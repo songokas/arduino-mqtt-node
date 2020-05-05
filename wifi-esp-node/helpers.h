@@ -1,15 +1,3 @@
-bool sendLiveData(PubSubClient & client)
-{
-    char topic[MAX_LEN_TOPIC] {0};
-    snprintf_P(topic, COUNT_OF(topic), CHANNEL_KEEP_ALIVE);
-    char liveMsg[16] {0};
-    sprintf(liveMsg, "%d", millis());
-    if (!client.publish(topic, liveMsg)) {
-        Serial << F("Failed to publish keep alive") << endl;
-        return false;
-    }	
-    return true;
-}
 
 bool sendPostRequest(HTTPClient & client, ValueProviderFactory & provider, const Pin & pin, JsonDocument & json)
 {
@@ -18,16 +6,16 @@ bool sendPostRequest(HTTPClient & client, ValueProviderFactory & provider, const
 
     snprintf_P(url, COUNT_OF(url), CHANNEL_SERVER, provider.getMatchingTopicType(pin), pin.id);
     if (!provider.addJson(json, pin)) {
-        Serial << (F("Failed to format message")) << endl;
+        error("Failed to format message");
         return false; 
     }
 
     if (!(serializeJson(json, message, COUNT_OF(message)) > 0)) {
-        Serial << (F("Failed to serialize json")) << endl;
+        error("Failed to serialize json");
         return false;  
     }
     if (!client.begin(url)) {
-        Serial << F("Http connection failed") << endl;
+        error("Http connection failed");
         return false;
     }
     client.addHeader("Content-Type", "application/json"); 
@@ -35,10 +23,10 @@ bool sendPostRequest(HTTPClient & client, ValueProviderFactory & provider, const
     client.end(); 
 
     if (httpCode != 200) {
-        Serial << (F("Failed to publish state")) << endl;
+        error("Failed to publish state");
         return false;
     } else {
-        Serial << F("Sent ") << url << F(" ") << message << endl;
+        info("Sent %s %s", url, message);
     }
     return true;
 }
@@ -46,21 +34,21 @@ bool sendPostRequest(HTTPClient & client, ValueProviderFactory & provider, const
 
 bool sendMqttRequest(PubSubClient & client, ValueProviderFactory & provider, const Pin & pin)
 {
-    char topic[MAX_LEN_TOPIC] {0};
-    char message[MAX_LEN_MESSAGE] {0};
+    char topic[MQTT_MAX_LEN_TOPIC] {0};
+    char message[MQTT_MAX_LEN_MESSAGE] {0};
 
     snprintf_P(topic, COUNT_OF(topic), CHANNEL_INFO, provider.getMatchingTopicType(pin), pin.id);
     
     if (!provider.formatMessage(message, COUNT_OF(message), pin)) {
-        Serial << (F("Failed to format message")) << endl;
+        error("Failed to format message");
         return false; 
     }
 
     if (!client.publish(topic, message)) {
-        Serial << (F("Failed to publish state")) << endl;
+        error("Failed to publish state");
         return false;
     } else {
-        Serial << F("Sent ") << topic << F(" ") << message << endl;
+        info("Sent %s %s", topic, message);
     }
     return true;
 }
@@ -72,18 +60,18 @@ void subscribeToChannels(
     PinStateJsonHandler & jsonHandler
 )
 {
-    char topic[MAX_LEN_TOPIC] {0};
+    char topic[MQTT_MAX_LEN_TOPIC] {0};
 
     snprintf_P(topic, COUNT_OF(topic), CHANNEL_SUBSCRIBE);
     if (subscribers.add(topic, &subscribeHandler, (uint16_t)0)) {
-        Serial << F("Failed to subscribe to topic: ") << topic << endl;
+        error("Failed to subscribe to topic: %s", topic);
         return;
     }
     client.subscribe(topic);
 
     snprintf_P(topic, COUNT_OF(topic), CHANNEL_SET_JSON);
     if (subscribers.add(topic, &jsonHandler, (uint16_t)0)) {
-        Serial << F("Failed to subscribe to topic: ") << topic << endl;
+        error("Failed to subscribe to topic: %s", topic);
         return;
     }
     client.subscribe(topic);
