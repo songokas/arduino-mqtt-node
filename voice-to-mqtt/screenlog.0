@@ -1,0 +1,467 @@
+È$l,4ðBGI¬y:`´79 info .........3738 info 4239 info 4247 info 4757 info 48880 info Hello amigo
+Wait for WiFi... Wifi connected.Attempting MQTT connection...connected.Recognizer cleared.Sent voice1/laistymas/POWER1 1HELLO AM60186 info 60187 info 
+Exception (3):
+epc1=0x40100c55 epc2=0x00000000 epc3=0x00000000 excvaddr=0x4002f5f8 depc=0x00000000
+
+>>>stack>>>
+
+ctx: cont
+sp: 3ffffd20 end: 3fffffc0 offset: 0190
+3ffffeb0:  0000000a 40240540 3ffe8304 4020e1ba  
+3ffffec0:  000007d0 000000fa 000000fa 40100d58  
+3ffffed0:  00000000 3fffff80 3ffee604 3ffefefc  
+3ffffee0:  3ffef5e4 3fffff80 00000020 40100ff7  
+3ffffef0:  00000006 6000001c 3ffffe76 00000006  
+3fffff00:  0000007f 40204f60 3ffefef4 4020211e  
+3fffff10:  0000000a 3fffff80 3ffee604 00000001  
+3fffff20:  3ffee580 3ffee498 3fffff80 4020214f  
+3fffff30:  3ffee580 3ffee498 3ffee604 40201778  
+3fffff40:  00000000 00000000 00000000 00000000  
+3fffff50:  00000000 00000000 00000000 00000000  
+3fffff60:  00000000 00000000 00000000 00000000  
+3fffff70:  00000000 00000000 00000000 00000000  
+3fffff80:  3ffefef4 3ffefefc 3ffefefc 4010055c  
+3fffff90:  3fffdad0 00000000 3ffee6f0 3ffee730  
+3fffffa0:  3fffdad0 00000000 3ffee6f0 40205df8  
+3fffffb0:  feefeffe feefeffe 3ffe84f4 40101305  
+<<<stack<<<
+Æe)
+ôD€S85 info .........3729 info 4230 info 4241 info 4763 info Hello amigo
+60005 info 60005 info Wait for WiFi... Wifi connected.Attempting MQTT connection...connected.Recognizer cleared.HELLO AMIGOWait for WiFi... Wifi conne
+Exception (3):
+epc1=0x40100c55 epc2=0x00000000 epc3=0x00000000 excvaddr=0x4002f5f8 depc=0x00000000
+
+>>>stack>>>
+
+ctx: cont
+sp: 3ffffd20 end: 3fffffc0 offset: 0190
+3ffffeb0:  0000000a 40240540 3ffe8304 4020e1ba  
+3ffffec0:  000007d0 000000fa 000000fa 40100d58  
+3ffffed0:  00000000 3fffff80 3ffee604 3ffefefc  
+3ffffee0:  3ffef5e4 3fffff80 00000020 40100ff7  
+3ffffef0:  00000006 6000001c 3ffffe76 00000006  
+3fffff00:  0000007f 40204f60 3ffefef4 4020211e  
+3fffff10:  0000000a 3fffff80 3ffee604 00000001  
+3fffff20:  3ffee580 3ffee498 3fffff80 4020214f  
+3fffff30:  3ffee580 3ffee498 3ffee604 40201778  
+3fffff40:  00000000 00000000 00000000 00000000  
+3fffff50:  00000000 00000000 00000000 00000000  
+3fffff60:  00000000 00000000 00000000 00000000  
+3fffff70:  00000000 00000000 00000000 00000000  
+3fffff80:  3ffefef4 3ffefefc 3ffefefc 4010055c  
+3fffff90:  3fffdad0 00000000 3ffee6f0 3ffee730  
+3fffffa0:  3fffdad0 00000000 3ffee6f0 40205df8  
+3fffffb0:  feefeffe feefeffe 3ffe84f4 40101305  
+<<<stack<<<
+?ˆÈL¾ôŒ¦Êÿ83 info .........3757 info 4257 info 4266 info 4781 info Hello amigo
+60026 info 60026 info Wait for WiFi... Wifi connected.Attempting MQTT connection...connected.Recognizer cleared.HELLO AMIGOWait for WiFi... Wifi conne
+Exception (3):
+epc1=0x40100c55 epc2=0x00000000 epc3=0x00000000 excvaddr=0x4002f5f8 depc=0x00000000
+
+>>>stack>>>
+
+ctx: cont
+sp: 3ffffd20 end: 3fffffc0 offset: 0190
+3ffffeb0:  0000000a 40240540 3ffe8304 4020e1ba  
+3ffffec0:  000007d0 000000fa 000000fa 40100d58  
+3ffffed0:  00000000 3fffff80 3ffee604 3ffefefc  
+3ffffee0:  3ffef5e4 3fffff80 00000020 40100ff7  
+3ffffef0:  00000006 6000001c 3ffffe76 00000006  
+3fffff00:  0000007f 40204f60 3ffefef4 4020211e  
+3fffff10:  0000000a 3fffff80 3ffee604 00000001  
+3fffff20:  3ffee580 3ffee498 3fffff80 4020214f  
+3fffff30:  3ffee580 3ffee498 3ffee604 40201778  
+3fffff40:  00000000 00000000 00000000 00000000  
+3fffff50:  00000000 00000000 00000000 00000000  
+3fffff60:  00000000 00000000 00000000 00000000  
+3fffff70:  00000000 00000000 00000000 00000000  
+3fffff80:  3ffefef4 3ffefefc 3ffefefc 4010055c  
+3fffff90:  3fffdad0 00000000 3ffee6f0 3ffee730  
+3fffffa0:  3fffdad0 00000000 3ffee6f0 40205df8  
+3fffffb0:  feefeffe feefeffe 3ffe84f4 40101305  
+<<<stack<<<
+Æe)(ÊâÄ
+Jÿ84 info .........3750 info 4250 info 4259 info 4778 info Hello amigo
+60010 info 60010 info Wait for WiFi... Wifi connected.Attempting MQTT connection...connected.Recognizer cleared.HELLO AMIGOWait for WiFi... Wifi conne
+Exception (3):
+epc1=0x40100c55 epc2=0x00000000 epc3=0x00000000 excvaddr=0x4002f5f8 depc=0x00000000
+
+>>>stack>>>
+
+ctx: cont
+sp: 3ffffd20 end: 3fffffc0 offset: 0190
+3ffffeb0:  0000000a 40240540 3ffe8304 4020e1ba  
+3ffffec0:  000007d0 000000fa 000000fa 40100d58  
+3ffffed0:  00000000 3fffff80 3ffee604 3ffefefc  
+3ffffee0:  3ffef5e4 3fffff80 00000020 40100ff7  
+3ffffef0:  00000006 6000001c 3ffffe76 00000006  
+3fffff00:  0000007f 40204f60 3ffefef4 4020211e  
+3fffff10:  0000000a 3fffff80 3ffee604 00000001  
+3fffff20:  3ffee580 3ffee498 3fffff80 4020214f  
+3fffff30:  3ffee580 3ffee498 3ffee604 40201778  
+3fffff40:  00000000 00000000 00000000 00000000  
+3fffff50:  00000000 00000000 00000000 00000000  
+3fffff60:  00000000 00000000 00000000 00000000  
+3fffff70:  00000000 00000000 00000000 00000000  
+3fffff80:  3ffefef4 3ffefefc 3ffefefc 4010055c  
+3fffff90:  3fffdad0 00000000 3ffee6f0 3ffee730  
+3fffffa0:  3fffdad0 00000000 3ffee6f0 40205df8  
+3fffffb0:  feefeffe feefeffe 3ffe84f4 40101305  
+<<<stack<<<
+H!ÖÔL¾ý`¦Êÿ83 info .........3738 info 4239 info 4255 info 4774 info Hello amigo
+60004 info 60004 info Wait for WiFi... Wifi connected.Attempting MQTT connection...connected.Recognizer cleared.HELLO AMIGOWait for WiFi... Wifi conne
+Exception (3):
+epc1=0x40100c55 epc2=0x00000000 epc3=0x00000000 excvaddr=0x4002f5f8 depc=0x00000000
+
+>>>stack>>>
+
+ctx: cont
+sp: 3ffffd20 end: 3fffffc0 offset: 0190
+3ffffeb0:  0000000a 40240540 3ffe8304 4020e1ba  
+3ffffec0:  000007d0 000000fa 000000fa 40100d58  
+3ffffed0:  00000000 3fffff80 3ffee604 3ffefefc  
+3ffffee0:  3ffef5e4 3fffff80 00000020 40100ff7  
+3ffffef0:  00000006 6000001c 3ffffe76 00000006  
+3fffff00:  0000007f 40204f60 3ffefef4 4020211e  
+3fffff10:  0000000a 3fffff80 3ffee604 00000001  
+3fffff20:  3ffee580 3ffee498 3fffff80 4020214f  
+3fffff30:  3ffee580 3ffee498 3ffee604 40201778  
+3fffff40:  00000000 00000000 00000000 00000000  
+3fffff50:  00000000 00000000 00000000 00000000  
+3fffff60:  00000000 00000000 00000000 00000000  
+3fffff70:  00000000 00000000 00000000 00000000  
+3fffff80:  3ffefef4 3ffefefc 3ffefefc 4010055c  
+3fffff90:  3fffdad0 00000000 3ffee6f0 3ffee730  
+3fffffa0:  3fffdad0 00000000 3ffee6f0 40205df8  
+3fffffb0:  feefeffe feefeffe 3ffe84f4 40101305  
+<<<stack<<<
+H!ˆÔLåôŒ0¯þ83 info .........3730 info 4230 info 4240 info 4761 info 60049 info Wait for WiFi... 
+
+60049 info Wifi connected.
+60050 info Ping
+
+Exception (3):
+epc1=0x40100e28 epc2=0x00000000 epc3=0x00000000 excvaddr=0x40051641 depc=0x00000000
+
+>>>stack>>>
+
+ctx: sys
+sp: 3fffecc0 end: 3fffffb0 offset: 0190
+3fffee50:  00000000 0122e8b4 402227d2 3ffeef54  
+3fffee60:  3ffeef3c ffffffcf 00000000 00000001  
+3fffee70:  000007d0 00000000 00000020 4023f4b4  
+3fffee80:  4023f4b4 40211598 00000020 4010102c  
+3fffee90:  0000003c 00000000 00000020 4010102c  
+3fffeea0:  00000000 4bc6a7f0 0000f25d 4021a0f0  
+3fffeeb0:  00000000 00000000 4bc6a7f0 40210669  
+3fffeec0:  40211598 0000ee7d 4010064a 402106a8  
+3fffeed0:  00000000 00000000 4bc6a7f0 4021153d  
+3fffeee0:  40211598 0000ee7d 3ffee940 402115cb  
+3fffeef0:  4023f4b4 0122e18f 3ffec508 402106cd  
+3fffef00:  03a39a8b 3ffeddb0 3ffedd88 40211740  
+3fffef10:  4023231c 3ffedd88 3ffeddb0 60000600  
+3fffef20:  03a39a8b 3ffeddb0 3ffedd88 40232329  
+3fffef30:  4023236e 3fffdab0 00000000 3fffdcb0  
+3fffef40:  3ffeddc0 3fffdab0 00000000 4020602c  
+3fffef50:  40000f49 40000f49 3fffdab0 40000f49  
+3fffef60:  40000e19 00000005 00048bd4 00000000  
+3fffef70:  00000000 aa55aa55 00000020 40104f8d  
+3fffef80:  40104f93 00048bd4 00000000 0000f00d  
+3fffef90:  4010000d 449c120c 2203ea50 a2cc0803  
+3fffefa0:  00000000 3fffef3c 00000000 3ffffeb8  
+3fffefb0:  3fffffc0 00000000 00000000 feefeffe  
+3fffefc0:  feefeffe feefeffe feefeffe feefeffe  
+3fffefd0:  feefeffe feefeffe feefeffe feefeffe  
+3fffefe0:  feefeffe feefeffe feefeffe feefeffe  
+3fffeff0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff000:  feefeffe feefeffe feefeffe feefeffe  
+3ffff010:  feefeffe feefeffe feefeffe feefeffe  
+3ffff020:  feefeffe feefeffe feefeffe feefeffe  
+3ffff030:  feefeffe feefeffe feefeffe feefeffe  
+3ffff040:  feefeffe feefeffe feefeffe feefeffe  
+3ffff050:  feefeffe feefeffe feefeffe feefeffe  
+3ffff060:  feefeffe feefeffe feefeffe feefeffe  
+3ffff070:  feefeffe feefeffe feefeffe feefeffe  
+3ffff080:  feefeffe feefeffe feefeffe feefeffe  
+3ffff090:  feefeffe feefeffe feefeffe feefeffe  
+3ffff0a0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff0b0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff0c0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff0d0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff0e0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff0f0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff100:  feefeffe feefeffe feefeffe feefeffe  
+3ffff110:  feefeffe feefeffe feefeffe feefeffe  
+3ffff120:  feefeffe feefeffe feefeffe feefeffe  
+3ffff130:  feefeffe feefeffe feefeffe feefeffe  
+3ffff140:  feefeffe feefeffe feefeffe feefeffe  
+3ffff150:  feefeffe feefeffe feefeffe feefeffe  
+3ffff160:  feefeffe feefeffe feefeffe feefeffe  
+3ffff170:  feefeffe feefeffe feefeffe feefeffe  
+3ffff180:  feefeffe feefeffe feefeffe feefeffe  
+3ffff190:  feefeffe feefeffe feefeffe feefeffe  
+3ffff1a0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff1b0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff1c0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff1d0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff1e0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff1f0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff200:  feefeffe feefeffe feefeffe feefeffe  
+3ffff210:  feefeffe feefeffe feefeffe feefeffe  
+3ffff220:  feefeffe feefeffe feefeffe feefeffe  
+3ffff230:  feefeffe feefeffe feefeffe feefeffe  
+3ffff240:  feefeffe feefeffe feefeffe feefeffe  
+3ffff250:  feefeffe feefeffe feefeffe feefeffe  
+3ffff260:  feefeffe feefeffe feefeffe feefeffe  
+3ffff270:  feefeffe feefeffe feefeffe feefeffe  
+3ffff280:  feefeffe feefeffe feefeffe feefeffe  
+3ffff290:  feefeffe feefeffe feefeffe feefeffe  
+3ffff2a0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff2b0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff2c0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff2d0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff2e0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff2f0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff300:  feefeffe feefeffe feefeffe feefeffe  
+3ffff310:  feefeffe feefeffe feefeffe feefeffe  
+3ffff320:  feefeffe feefeffe feefeffe feefeffe  
+3ffff330:  feefeffe feefeffe feefeffe feefeffe  
+3ffff340:  feefeffe feefeffe feefeffe feefeffe  
+3ffff350:  feefeffe feefeffe feefeffe feefeffe  
+3ffff360:  feefeffe feefeffe feefeffe feefeffe  
+3ffff370:  feefeffe feefeffe feefeffe feefeffe  
+3ffff380:  feefeffe feefeffe feefeffe feefeffe  
+3ffff390:  feefeffe feefeffe feefeffe feefeffe  
+3ffff3a0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff3b0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff3c0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff3d0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff3e0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff3f0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff400:  feefeffe feefeffe feefeffe feefeffe  
+3ffff410:  feefeffe feefeffe feefeffe feefeffe  
+3ffff420:  feefeffe feefeffe feefeffe feefeffe  
+3ffff430:  feefeffe feefeffe feefeffe feefeffe  
+3ffff440:  feefeffe feefeffe feefeffe feefeffe  
+3ffff450:  feefeffe feefeffe feefeffe feefeffe  
+3ffff460:  feefeffe feefeffe feefeffe feefeffe  
+3ffff470:  feefeffe feefeffe feefeffe feefeffe  
+3ffff480:  feefeffe feefeffe feefeffe feefeffe  
+3ffff490:  feefeffe feefeffe feefeffe feefeffe  
+3ffff4a0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff4b0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff4c0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff4d0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff4e0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff4f0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff500:  feefeffe feefeffe feefeffe feefeffe  
+3ffff510:  feefeffe feefeffe feefeffe feefeffe  
+3ffff520:  feefeffe feefeffe feefeffe feefeffe  
+3ffff530:  feefeffe feefeffe feefeffe feefeffe  
+3ffff540:  feefeffe feefeffe feefeffe feefeffe  
+3ffff550:  feefeffe feefeffe feefeffe feefeffe  
+3ffff560:  feefeffe feefeffe feefeffe feefeffe  
+3ffff570:  feefeffe feefeffe feefeffe feefeffe  
+3ffff580:  feefeffe feefeffe feefeffe feefeffe  
+3ffff590:  feefeffe feefeffe feefeffe feefeffe  
+3ffff5a0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff5b0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff5c0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff5d0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff5e0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff5f0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff600:  feefeffe feefeffe feefeffe feefeffe  
+3ffff610:  feefeffe feefeffe feefeffe feefeffe  
+3ffff620:  feefeffe feefeffe feefeffe feefeffe  
+3ffff630:  feefeffe feefeffe feefeffe feefeffe  
+3ffff640:  feefeffe feefeffe feefeffe feefeffe  
+3ffff650:  feefeffe feefeffe feefeffe feefeffe  
+3ffff660:  feefeffe feefeffe feefeffe feefeffe  
+3ffff670:  feefeffe feefeffe feefeffe feefeffe  
+3ffff680:  feefeffe feefeffe feefeffe feefeffe  
+3ffff690:  feefeffe feefeffe feefeffe feefeffe  
+3ffff6a0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff6b0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff6c0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff6d0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff6e0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff6f0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff700:  feefeffe feefeffe feefeffe feefeffe  
+3ffff710:  feefeffe feefeffe feefeffe feefeffe  
+3ffff720:  feefeffe feefeffe feefeffe feefeffe  
+3ffff730:  feefeffe feefeffe feefeffe feefeffe  
+3ffff740:  feefeffe feefeffe feefeffe feefeffe  
+3ffff750:  feefeffe feefeffe feefeffe feefeffe  
+3ffff760:  feefeffe feefeffe feefeffe feefeffe  
+3ffff770:  feefeffe feefeffe feefeffe feefeffe  
+3ffff780:  feefeffe feefeffe feefeffe feefeffe  
+3ffff790:  feefeffe feefeffe feefeffe feefeffe  
+3ffff7a0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff7b0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff7c0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff7d0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff7e0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff7f0:  feefeffe feefeffe feefeffe(1Èwh¾ý@èHù86 info Wait for WiFi... 
+.........
+3734 info Wifi connected.
+4234 info Attempting MQTT connection...
+4242 info connected.
+4766 info Recognizer cleared.
+60048 info Wait for WiFi... 
+
+60048 info Wifi connected.
+60049 info Ping
+
+Exception (3):
+epc1=0x40100e28 epc2=0x00000000 epc3=0x00000000 excvaddr=0x40051781 depc=0x00000000
+
+>>>stack>>>
+
+ctx: sys
+sp: 3fffecf0 end: 3fffffb0 offset: 0190
+3fffee80:  00000000 10310606 00640100 00000001  
+3fffee90:  0000003c 00000000 00000020 4010102c  
+3fffeea0:  00000000 3ffea028 3ffea034 3ffef37c  
+3fffeeb0:  0000003c 00000000 00000020 4010102c  
+3fffeec0:  00000000 4bc6a7f0 0000f16a 60000600  
+3fffeed0:  00000000 00000000 0000003c 4021a0f0  
+3fffeee0:  000005e0 00000000 4010064a 40213d48  
+3fffeef0:  00000000 0126947f 3ffec530 00000100  
+3fffef00:  03af0814 3ffeddb0 3ffedd88 3ffef37c  
+3fffef10:  3fffdc80 3fffef30 3fffef34 40210370  
+3fffef20:  40232348 3ffef304 3ffef5d4 40230294  
+3fffef30:  4023236e 3fffdab0 00000000 3fffdcb0  
+3fffef40:  3ffeddd0 00000000 3ffef5d4 40231f6f  
+3fffef50:  40000f49 3fffdab0 3fffdab0 40000f49  
+3fffef60:  40000e19 00000005 00048bd4 00000000  
+3fffef70:  00000000 aa55aa55 00000020 40104f8d  
+3fffef80:  40104f93 00048bd4 00000000 0000f00d  
+3fffef90:  4010000d 449c120c 2203ea50 a2cc0803  
+3fffefa0:  00000000 3fffef3c 00000000 3ffffeb8  
+3fffefb0:  3fffffc0 00000000 00000000 feefeffe  
+3fffefc0:  feefeffe feefeffe feefeffe feefeffe  
+3fffefd0:  feefeffe feefeffe feefeffe feefeffe  
+3fffefe0:  feefeffe feefeffe feefeffe feefeffe  
+3fffeff0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff000:  feefeffe feefeffe feefeffe feefeffe  
+3ffff010:  feefeffe feefeffe feefeffe feefeffe  
+3ffff020:  feefeffe feefeffe feefeffe feefeffe  
+3ffff030:  feefeffe feefeffe feefeffe feefeffe  
+3ffff040:  feefeffe feefeffe feefeffe feefeffe  
+3ffff050:  feefeffe feefeffe feefeffe feefeffe  
+3ffff060:  feefeffe feefeffe feefeffe feefeffe  
+3ffff070:  feefeffe feefeffe feefeffe feefeffe  
+3ffff080:  feefeffe feefeffe feefeffe feefeffe  
+3ffff090:  feefeffe feefeffe feefeffe feefeffe  
+3ffff0a0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff0b0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff0c0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff0d0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff0e0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff0f0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff100:  feefeffe feefeffe feefeffe feefeffe  
+3ffff110:  feefeffe feefeffe feefeffe feefeffe  
+3ffff120:  feefeffe feefeffe feefeffe feefeffe  
+3ffff130:  feefeffe feefeffe feefeffe feefeffe  
+3ffff140:  feefeffe feefeffe feefeffe feefeffe  
+3ffff150:  feefeffe feefeffe feefeffe feefeffe  
+3ffff160:  feefeffe feefeffe feefeffe feefeffe  
+3ffff170:  feefeffe feefeffe feefeffe feefeffe  
+3ffff180:  feefeffe feefeffe feefeffe feefeffe  
+3ffff190:  feefeffe feefeffe feefeffe feefeffe  
+3ffff1a0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff1b0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff1c0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff1d0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff1e0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff1f0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff200:  feefeffe feefeffe feefeffe feefeffe  
+3ffff210:  feefeffe feefeffe feefeffe feefeffe  
+3ffff220:  feefeffe feefeffe feefeffe feefeffe  
+3ffff230:  feefeffe feefeffe feefeffe feefeffe  
+3ffff240:  feefeffe feefeffe feefeffe feefeffe  
+3ffff250:  feefeffe feefeffe feefeffe feefeffe  
+3ffff260:  feefeffe feefeffe feefeffe feefeffe  
+3ffff270:  feefeffe feefeffe feefeffe feefeffe  
+3ffff280:  feefeffe feefeffe feefeffe feefeffe  
+3ffff290:  feefeffe feefeffe feefeffe feefeffe  
+3ffff2a0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff2b0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff2c0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff2d0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff2e0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff2f0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff300:  feefeffe feefeffe feefeffe feefeffe  
+3ffff310:  feefeffe feefeffe feefeffe feefeffe  
+3ffff320:  feefeffe feefeffe feefeffe feefeffe  
+3ffff330:  feefeffe feefeffe feefeffe feefeffe  
+3ffff340:  feefeffe feefeffe feefeffe feefeffe  
+3ffff350:  feefeffe feefeffe feefeffe feefeffe  
+3ffff360:  feefeffe feefeffe feefeffe feefeffe  
+3ffff370:  feefeffe feefeffe feefeffe feefeffe  
+3ffff380:  feefeffe feefeffe feefeffe feefeffe  
+3ffff390:  feefeffe feefeffe feefeffe feefeffe  
+3ffff3a0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff3b0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff3c0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff3d0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff3e0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff3f0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff400:  feefeffe feefeffe feefeffe feefeffe  
+3ffff410:  feefeffe feefeffe feefeffe feefeffe  
+3ffff420:  feefeffe feefeffe feefeffe feefeffe  
+3ffff430:  feefeffe feefeffe feefeffe feefeffe  
+3ffff440:  feefeffe feefeffe feefeffe feefeffe  
+3ffff450:  feefeffe feefeffe feefeffe feefeffe  
+3ffff460:  feefeffe feefeffe feefeffe feefeffe  
+3ffff470:  feefeffe feefeffe feefeffe feefeffe  
+3ffff480:  feefeffe feefeffe feefeffe feefeffe  
+3ffff490:  feefeffe feefeffe feefeffe feefeffe  
+3ffff4a0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff4b0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff4c0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff4d0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff4e0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff4f0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff500:  feefeffe feefeffe feefeffe feefeffe  
+3ffff510:  feefeffe feefeffe feefeffe feefeffe  
+3ffff520:  feefeffe feefeffe feefeffe feefeffe  
+3ffff530:  feefeffe feefeffe feefeffe feefeffe  
+3ffff540:  feefeffe feefeffe feefeffe feefeffe  
+3ffff550:  feefeffe feefeffe feefeffe feefeffe  
+3ffff560:  feefeffe feefeffe feefeffe feefeffe  
+3ffff570:  feefeffe feefeffe feefeffe feefeffe  
+3ffff580:  feefeffe feefeffe feefeffe feefeffe  
+3ffff590:  feefeffe feefeffe feefeffe feefeffe  
+3ffff5a0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff5b0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff5c0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff5d0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff5e0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff5f0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff600:  feefeffe feefeffe feefeffe feefeffe  
+3ffff610:  feefeffe feefeffe feefeffe feefeffe  
+3ffff620:  feefeffe feefeffe feefeffe feefeffe  
+3ffff630:  feefeffe feefeffe feefeffe feefeffe  
+3ffff640:  feefeffe feefeffe feefeffe feefeffe  
+3ffff650:  feefeffe feefeffe feefeffe feefeffe  
+3ffff660:  feefeffe feefeffe feefeffe feefeffe  
+3ffff670:  feefeffe feefeffe feefeffe feefeffe  
+3ffff680:  feefeffe feefeffe feefeffe feefeffe  
+3ffff690:  feefeffe feefeffe feefeffe feefeffe  
+3ffff6a0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff6b0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff6c0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff6d0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff6e0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff6f0:  feefeffe feefeffe feefeffe feefeffe  
+3ffff700:  feefeffe feefeffe feefeffe feefeffe  
+3ffff710:  feefeffe feefeffe feefeffe feefeffe  
+3ffff720:  feefeffe feefeffe feefeffe feefeffe  
+3ffff730:  feefeffe feefeffe feefeffe feefeffe  
+3ffff740:  feefef'JÖÔô,)ôŒ¦Êÿ87 info Wait for WiFi... 
+.........
+3760 info Wifi connected.
+4261 info Attempting MQTT connection...
+4269 info connected.
+4788 info Recognizer cleared.

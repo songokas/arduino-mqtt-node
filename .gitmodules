@@ -44,3 +44,6 @@
 	path = libs/esp8266
 	url = https://github.com/esp8266/Arduino.git
     ignore = dirty
+[submodule "libs/VoiceRecognitionV3"]
+	path = libs/VoiceRecognitionV3
+	url = https://github.com/elechouse/VoiceRecognitionV3

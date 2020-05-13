@@ -1,1 +1,1 @@
-compiler.cpp.extra_flags=-I ../arduino-link -DHTTP_SERVER_URL="http://192.168.0.120/" -DNODE_NAME="heating/nodes/bedroom" -DWLAN_SSID_1="ssid" -DWLAN_PASSWORD_1="pass" -DMQTT_SERVER_ADDRESS="192.168.0.140" -DDEBUG=1
+compiler.cpp.extra_flags=-I ../arduino-link -DHTTP_SERVER_URL="http://192.168.0.120/" -DMQTT_CLIENT_NAME="heating/nodes/bedroom" -DWLAN_SSID_1="ssid" -DWLAN_PASSWORD_1="pass" -DMQTT_SERVER_ADDRESS="192.168.0.140" -DDEBUG=1
