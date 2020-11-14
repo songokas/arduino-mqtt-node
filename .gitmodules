@@ -47,3 +47,6 @@
 [submodule "libs/VoiceRecognitionV3"]
 	path = libs/VoiceRecognitionV3
 	url = https://github.com/elechouse/VoiceRecognitionV3
+[submodule "libs/AutoConnect"]
+	path = libs/AutoConnect
+	url = https://github.com/Hieromon/AutoConnect.git

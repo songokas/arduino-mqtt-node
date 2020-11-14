@@ -73,3 +73,28 @@ make && make upload && make monitor
 ```
 
 tested on node-mcu
+
+### voice-to-mqtt
+
+define commands in main.cpp or create custom-commands.h file with content
+
+commands[0] = VoiceMqtt::fromFlashString(PSTR("cmnd/heating/power1"), PSTR("toggle"));
+
+```
+cd voice-to-mqtt
+cp Makefile-esp Makefile
+# modify Makefile if necessary
+cp platform.local.example.txt platform.local.txt
+# modify platform.local.txt provide your own keys, change settings
+make && make upload && make monitor
+```
+
+override topic, message for record:
+
+```
+mosquitto_pub -h servas -t voice/train/signature/0 -m "cmnd/heating/power1 toggle"
+```
+
+#### TODO 
+
+* training does not work on esp8266 devices (only topic and message can be overriden)

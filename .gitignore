@@ -5,3 +5,4 @@
 !src/CustomerValueProviders
 .vscode
 .idea
+voice-to-mqtt/custom-commands.h
