@@ -6,28 +6,21 @@
 #include <ArduinoJson.h>
 #include <ESP8266HTTPClient.h>
 #include <VoiceRecognitionV3.h>
+#include <EEPROM.h>
 
 #include "CommonModule/MacroHelper.h"
 #include "CommonModule/StringHelper.h"
 #include "MqttModule/MqttConfig.h"
 #include "RadioEncrypted/Helpers.h"
 
+// requires WLAN_SSID_1, WLAN_PASSWORD_1, MQTT_SERVER_ADDRESS, MQTT_CLIENT_NAME
+
 using RadioEncrypted::connectToWifi;
 using RadioEncrypted::resetWatchDog;
 using RadioEncrypted::connectToMqtt;
 using RadioEncrypted::sendLiveData;
 using CommonModule::findPosFromEnd;
-
-struct VoiceMqtt
-{
-    uint8_t index {0};
-    const char * topic {nullptr};
-    const char * value {nullptr};
-
-    VoiceMqtt(uint8_t index, const char * topic, const char * value): index(index), topic(topic), value(value) {}
-};
-
-// requires WLAN_SSID_1, WLAN_PASSWORD_1, MQTT_SERVER_ADDRESS, MQTT_CLIENT_NAME
+using CommonModule::findNextPos;
 
 const uint16_t DISPLAY_TIME {60000};
 const uint8_t WIFI_RETRY {10};
@@ -40,63 +33,26 @@ const uint32_t BAUD_RATE {9600};
 const uint16_t RESET_TIME {10000};
 const uint8_t MAX_LOADED {7};
 const uint8_t MAX_RECOGNIZED_BUFFER {64};
+const char CHANNEL_TRAIN[] PROGMEM {"voice/train/#"};
+const uint8_t MAX_SIGNATURE_LENGTH {10};
+const uint8_t EEPROM_CACHE {200};
+const uint8_t MAX_COMMANDS {20};
+const char DEFAULT_MESSAGE[] {"toggle"};
+
+#include "helpers.h"
 
 ESP8266WiFiMulti wifi;
 WiFiClient net;
 PubSubClient client(net);
 HTTPClient httpClient;
 VR voiceRecognition(PIN_TX, PIN_RX);
-
-const VoiceMqtt commands[] {
-    {3, "voice1/laistymas/POWER3", "1"},
-    {8, "voice1/laistymas/POWER1", "1"},
-};
-
-bool loadGroup(VR & voiceRecognition, uint8_t group)
-{
-    uint8_t index {group * MAX_LOADED};
-    uint8_t loadUntil {index + MAX_LOADED};
-    if (voiceRecognition.clear() != 0) {
-        error("Failed to clear recognizer.");
-        return false;
-    } 
-    info("Load group %d", group);
-    while (index < loadUntil) {
-        if(voiceRecognition.load(index) != 0) {
-            warning("Failed to load record: %d", index);
-        }
-        index++;
-    }
-    return true;
-}
-
-// signature is limited to 10 chars
-bool publishBasedOnSignature(PubSubClient & client, const char * buffer, uint8_t signLength)
-{
-    uint8_t pos = findPosFromEnd(buffer, signLength, '-');
-    if (pos == 0) {
-        pos = strlen(buffer) - 1;
-    } else {
-        pos++;
-    }
-    char topic[10] {0};
-    char message[10] {0};
-    strncpy(topic, buffer, MIN(sizeof(topic) - 1, pos));
-    strncpy(message, buffer+pos, MIN(sizeof(message) - 1, signLength - pos));
-
-    if (!client.publish(topic, message)) {
-        error("Failed to publish state");
-        return true;
-    } else {
-        info("Sent %s %s", topic, message);
-        return false;
-    }
-}
+VoiceMqtt commands[MAX_COMMANDS] {};
 
 void setup()
 {
     voiceRecognition.begin(9600);
     Serial.begin(BAUD_RATE);
+    EEPROM.begin(EEPROM_CACHE);
     ESP.wdtDisable();
     ESP.wdtEnable(RESET_TIME);
 
@@ -115,7 +71,7 @@ void setup()
     delay(500);
 
     client.setServer(MQTT_SERVER_ADDRESS, 1883);
-    if (!connectToMqtt(client, MQTT_CLIENT_NAME, nullptr)) {
+    if (!connectToMqtt(client, MQTT_CLIENT_NAME, CHANNEL_TRAIN)) {
         error("Failed to connect to mqtt server on %s", MQTT_SERVER_ADDRESS);
         ESP.deepSleep(120e6);
     }
@@ -123,8 +79,36 @@ void setup()
     resetWatchDog();
     delay(500);
 
-    client.setCallback([](const char * topic, uint8_t * payload, uint16_t len) {
+
+    if (EEPROM.read(EEPROM_CACHE) != 255) {
+        EEPROM.get(EEPROM_CACHE, commands);
+    } else {
+        commands[3] = VoiceMqtt::fromFlashString(PSTR("voice1/laistymas/POWER1"), PSTR("toggle"));
+        commands[8] = VoiceMqtt::fromFlashString(PSTR("voice1/laistymas/POWER3"), PSTR("1"));
+    }
+
+    //expects topic -> message : voice/train/window1/3 -> cmdn/window1/power1 toggle
+    client.setCallback([&voiceRecognition, &commands](const char * topic, uint8_t * payload, uint16_t len) {
         debug("Mqtt message received for: %s", topic);
+    
+        uint8_t indexPos = findPosFromEnd(topic, strlen(topic), '/');
+        uint8_t index = atoi(topic+indexPos);
+
+        uint8_t sigPos = findPosFromEnd(topic, indexPos, '/');
+
+        char signature[MAX_SIGNATURE_LENGTH]{0};
+        strncpy(signature, topic, MIN(sizeof(signature) - 1, indexPos - sigPos));
+
+        if (train(voiceRecognition, index, signature) == 0) {
+            info("Trained %s", signature);
+            commands[index] = VoiceMqtt::fromPayload(payload, len);
+            loadGroup(voiceRecognition, 0);
+
+            EEPROM.put(EEPROM_CACHE, commands);
+            if (!EEPROM.commit()) {
+                error("Failed to save commands.");
+            }
+        }
     });
 
     if (!loadGroup(voiceRecognition, 0)) {
@@ -140,35 +124,17 @@ void loop()
 
     uint8_t buf[MAX_RECOGNIZED_BUFFER] {0};
     uint8_t ret = voiceRecognition.recognize(buf, 50);
+
     if(ret > 0) {
-        bool found {false};
-        for (auto command: commands) {
-            // buf[1] is train index
-            if (command.index == buf[1]) {
 
-                if (!client.publish(command.topic, command.value)) {
-                    error("Failed to publish state");
-                } else {
-                    info("Sent %s %s", command.topic, command.value);
-                }
-
-                found = true;
-                break;
-            }
-        }
-        if (!found) {
-            // buf 3 signature length
-            // use sign value e.g. heating-1 or last char heating1, heating0
-            if (buf[3] > 0) {
-                // buf 4 signature begins
-                if (strncmp("group", (char*)buf+4, 5) == 0) {
-                    uint8_t group = atoi((char*)buf+9);
-                    loadGroup(voiceRecognition, group);
-                } else {
-                    publishBasedOnSignature(client, (char*)buf+4, MIN(sizeof(buf) - 1, buf[3]));
-                }
+        if (strncmp("group", (char*)buf+4, 5) == 0) {
+            uint8_t group = atoi((char*)buf+9);
+            loadGroup(voiceRecognition, group);
+        } else if (COUNT_OF(commands) > buf[1] && commands[buf[1]].topic[0] != '\0') {
+            if (!client.publish(commands[buf[1]].topic, commands[buf[1]].message)) {
+                error("Failed to publish state");
             } else {
-                warning("Record %d has not been mapped", buf[1]);
+                info("Sent %s %s", commands[buf[1]].topic, commands[buf[1]].message);
             }
         }
     }
@@ -179,7 +145,7 @@ void loop()
             error("Unable to connect to wifi");
         }
         resetWatchDog();
-        if (!connectToMqtt(client, MQTT_CLIENT_NAME, nullptr)) {
+        if (!connectToMqtt(client, MQTT_CLIENT_NAME, CHANNEL_TRAIN)) {
             error("Failed to connect to mqtt server on %s", MQTT_SERVER_ADDRESS);
         }
         resetWatchDog();
